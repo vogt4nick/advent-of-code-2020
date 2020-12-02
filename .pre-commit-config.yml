@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/ambv/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.7
+    hooks:
+      - id: forbid-crlf
+      - id: forbid-tabs
+      - id: remove-crlf
+      - id: remove-tabs
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0
+    hooks:
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-encoding-pragma
+      - id: flake8
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
