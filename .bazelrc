@@ -1,0 +1,5 @@
+fetch --repository_cache=.cache/repository_cache
+build --repository_cache=.cache/repository_cache
+test --repository_cache=.cache/repository_cache
+build --disk_cache=.cache/disk_cache
+test --disk_cache=.cache/disk_cache

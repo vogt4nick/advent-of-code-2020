@@ -1,0 +1,7 @@
+package_group(
+    name = "report_repair",
+    packages = [
+        "//apps/report_repair",
+        "//libs/report_repair",
+    ],
+)
