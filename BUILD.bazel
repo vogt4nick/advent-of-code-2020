@@ -5,3 +5,11 @@ package_group(
         "//libs/report_repair",
     ],
 )
+
+package_group(
+    name = "password_philosophy",
+    packages = [
+        "//apps/password_philosophy",
+        "//libs/password_philosophy",
+    ],
+)

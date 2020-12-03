@@ -6,3 +6,4 @@ bazel-advent-of-code-2020
 bazel-bin
 bazel-out
 bazel-testlogs
+bazel/
