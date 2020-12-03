@@ -3,9 +3,6 @@ import unittest
 from libs.report_repair import _load_input, calc_repair_cost, main
 
 
-REPORT_REPAIR_DEFAULT_INPUT: str = "libs/report_repair/data/input.txt"
-
-
 class TestReportRepair(unittest.TestCase):
     def setUp(self):
         self.input = sorted([1721, 979, 366, 299, 675, 1456])
