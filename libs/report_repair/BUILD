@@ -11,8 +11,16 @@ py_test(
     name = "test",
     timeout = "short",
     srcs = ["tests/test_report_repair.py"],
-    data = ["data/input.txt"],
     local = True,
     main = "tests/test_report_repair.py",
+    deps = [":lib"],
+)
+
+py_test(
+    name = "test_solutions",
+    timeout = "short",
+    srcs = ["tests/test_solutions.py"],
+    local = True,
+    main = "tests/test_solutions.py",
     deps = [":lib"],
 )

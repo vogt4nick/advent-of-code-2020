@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import argparse
-from libs.password_philosophy import main
+from libs.password_philosophy import PASSWORD_PHILOSOPHY_DEFAULT_INPUT, main
 
-PASSWORD_PHILOSOPHY_DEFAULT_INPUT: str = "apps/password_philosophy/data/input.txt"
 
 ARGS = argparse.ArgumentParser(description=main.__doc__)
 ARGS.add_argument(

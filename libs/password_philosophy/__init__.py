@@ -63,6 +63,9 @@ from dataclasses import dataclass
 from typing import Iterator, Union
 
 
+PASSWORD_PHILOSOPHY_DEFAULT_INPUT: str = "libs/password_philosophy/data/input.txt"
+
+
 class InvalidPasswordError(Exception):
     """Raise if a password is invalid."""
 
@@ -195,3 +198,5 @@ def main(input_file: str, policy_type: str):
             count_passwords += 1
 
     print(f"{count_valid} / {count_passwords} passwords are valid in {input_file}.")
+
+    return count_valid

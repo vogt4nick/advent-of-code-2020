@@ -55,6 +55,9 @@ from functools import reduce
 from typing import List, Tuple
 
 
+REPORT_REPAIR_DEFAULT_INPUT: str = "libs/report_repair/data/input.txt"
+
+
 class NoValidSumError(Exception):
     """Raise when no valid sums are found."""
 
@@ -122,7 +125,7 @@ def calc_repair_cost(L: Tuple[int], *, n_addends: int = 2, sum_: int = 2020) -> 
     return reduce((lambda x, y: x * y), addends)
 
 
-def main(*, input_file, n_addends: int = 2, sum_: int = 2020) -> None:
+def main(*, input_file, n_addends: int = 2, sum_: int = 2020) -> int:
     """Search the input file for two numbers that sum to 2020 and return the
     product of the resulting two numbers.
 
@@ -135,3 +138,5 @@ def main(*, input_file, n_addends: int = 2, sum_: int = 2020) -> None:
     repair_cost = calc_repair_cost(L, n_addends=n_addends, sum_=sum_)
 
     print(f"{addends} multiply to {repair_cost} and sum to {sum_}")
+
+    return repair_cost

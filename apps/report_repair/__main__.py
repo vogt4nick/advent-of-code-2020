@@ -1,7 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import argparse
-from libs.report_repair import main
-
-REPORT_REPAIR_DEFAULT_INPUT: str = "libs/report_repair/data/input.txt"
+from libs.report_repair import REPORT_REPAIR_DEFAULT_INPUT, main
 
 ARGS = argparse.ArgumentParser(description=main.__doc__)
 ARGS.add_argument(
