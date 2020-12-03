@@ -58,22 +58,77 @@ Given the same example list from above:
 
 How many passwords are valid according to the new interpretation of the policies?
 """
+from abc import ABC, abstractclassmethod, abstractmethod
 from dataclasses import dataclass
-from typing import Iterator
+from typing import Iterator, Union
 
 
 class InvalidPasswordError(Exception):
     """Raise if a password is invalid."""
 
 
+class AbstractPasswordPolicy(ABC):
+    @abstractclassmethod
+    def from_string(cls, s: str):
+        pass
+
+    @abstractmethod
+    def validate(self, password: str) -> bool:
+        pass
+
+
 @dataclass
-class PasswordPolicy:
+class IndexCharacterPolicy(AbstractPasswordPolicy):
+    char: str
+    indices: tuple
+
+    @classmethod
+    def from_string(cls, s: str) -> "CountCharacterPolicy":
+        """Parse a string like 1-3
+
+        Example:
+            Given string '1-3 a', 1-3 a means that the password must
+            contain 'a' at least 1 time and at most 3 times.
+        """
+        min_max, char = s.strip().split(" ")
+        i, j = min_max.split("-")
+        indices = (int(i) - 1, int(j) - 1)
+
+        return cls(char=char, indices=indices)
+
+    def validate(self, password: str) -> bool:
+        i, j = self.indices
+        is_char_in_first_position = password[i] == self.char
+        is_char_in_second_position = password[j] == self.char
+
+        if is_char_in_first_position is True and is_char_in_second_position is False:
+            return True
+        elif is_char_in_first_position is False and is_char_in_second_position is True:
+            return True
+        elif is_char_in_first_position is True and is_char_in_second_position is True:
+            msg = (
+                f"The character '{self.char}' exists in both position {i+1} "
+                f"and position {j+1} in password '{password}'. The character "
+                f"{self.char} must exist in either of these positions, not both."
+            )
+            raise InvalidPasswordError(msg)
+        else:
+            msg = (
+                f"The character '{self.char}' exists neither in position {i+1} "
+                f"nor position {j+1} in password '{password}'. The character "
+                f"{self.char} must exist in either of these positions, not both."
+            )
+            raise InvalidPasswordError(msg)
+
+
+@dataclass
+class CountCharacterPolicy(AbstractPasswordPolicy):
     char: str
     min_: int
     max_: int
 
     @classmethod
-    def from_string(cls, s: str) -> "PasswordPolicy":
+    def from_string(cls, s: str) -> "CountCharacterPolicy":
         """Parse a string like 1-3
 
         Example:
@@ -102,18 +157,36 @@ def _get_lines(p: str) -> Iterator[str]:
         yield from ifile.readlines()
 
 
-def validate_password(s: str) -> int:
+def validate_password(s: str, policy_type: str) -> None:
+    """Validate a policy and password using a given policy type.
+
+    Args:
+        s (str): policy and password as string
+        policy_type (str):
+            The policy type to interpret the policy string.
+            One of 'count' or 'index'.
+
+    Raises:
+        ValueError: Invalid policy type
+    """
+    if policy_type == "index":
+        Policy = IndexCharacterPolicy
+    elif policy_type == "count":
+        Policy = CountCharacterPolicy
+    else:
+        raise ValueError("Invalid policy type. Choose 'index' or 'count'")
+
     policy_string, password = s.split(": ")
-    policy = PasswordPolicy.from_string(policy_string)
+    policy = Policy.from_string(policy_string)
     policy.validate(password)
 
 
-def main(input_file):
+def main(input_file: str, policy_type: str):
     count_valid = 0
     count_passwords = 0
     for line in _get_lines(input_file):
         try:
-            validate_password(line.strip())
+            validate_password(line.strip(), policy_type=policy_type)
         except InvalidPasswordError as err:
             pass
         else:
