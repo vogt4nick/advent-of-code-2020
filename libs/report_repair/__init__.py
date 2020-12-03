@@ -37,8 +37,26 @@ them together produces 1721 * 299 = 514579, so the correct answer is 514579.
 
 Of course, your expense report is much larger. Find the two entries that sum
 to 2020; what do you get if you multiply them together?
+
+--- Part Two ---
+
+The Elves in accounting are thankful for your help; one of them even offers
+you a starfish coin they had left over from a past vacation. They offer you a
+second one if you can find three numbers in your expense report that meet the
+same criteria.
+
+Using the above example again, the three entries that sum to 2020 are 979,
+366, and 675. Multiplying them together produces the answer, 241861950.
+
+In your expense report, what is the product of the three entries that sum to
+2020?
 """
+from functools import reduce
 from typing import List, Tuple
+
+
+class NoValidSumError(Exception):
+    """Raise when no valid sums are found."""
 
 
 def _load_input(p: str) -> Tuple:
@@ -55,22 +73,43 @@ def _load_input(p: str) -> Tuple:
 
     return tuple(numbers)
 
-def _get_addends(L: List) -> Tuple[int]:
-    """Lookup two addends that sum to 2020.
+
+def _get_addends(L: List[int], n: int = 2, sum_: int = 2020) -> Tuple[int]:
+    """Lookup `n` addends that sum to `sum_`.
 
     Args:
         L (List): A list of integers.
+        n (int): The number of addends to calculate sum.
+        sum_ (int): The desired sum of addends.
 
     Returns:
-        Tuple[int]: A tuple of two addends that sum to 2020.
+        Tuple[int]: A tuple of `n` addends that sum to `sum_`.
     """
-    for i in L:
-        for j in L[i+1:]:
-            if i + j == 2020:
-                return i, j
+    L = sorted(L)
+    for xi, x in enumerate(L):
+        addends = [x]
+        subset = L[xi + 1 :]
+        if n == 2:
+            try:
+                yi = subset.index(sum_ - x)
+            except ValueError:
+                raise NoValidSumError
+            else:
+                y = subset[yi]
+                addends.append(y)
+                return addends
+        else:
+            try:
+                new_n, new_sum = n - 1, sum_ - x
+                addends += _get_addends(subset, n=new_n, sum_=new_sum)
+            except NoValidSumError:
+                continue
+            else:
+                return addends
 
-def calc_repair_cost(L: Tuple[int]) -> int:
-    """Search tuple for two numbers that sum to 2020 and return the 
+
+def calc_repair_cost(L: Tuple[int], *, n_addends: int = 2, sum_: int = 2020) -> int:
+    """Search tuple for two numbers that sum to 2020 and return the
     product of the resulting two numbers.
 
     Args:
@@ -79,20 +118,20 @@ def calc_repair_cost(L: Tuple[int]) -> int:
     Returns:
         int: The product of two numbers summing to 2020.
     """
-    x, y = _get_addends(L)
+    addends = _get_addends(L, n=n_addends, sum_=sum_)
+    return reduce((lambda x, y: x * y), addends)
 
-    return x * y
 
-def main(*, input_file: str) -> None:
-    """Search the input file for two numbers that sum to 2020 and return the 
+def main(*, input_file, n_addends: int = 2, sum_: int = 2020) -> None:
+    """Search the input file for two numbers that sum to 2020 and return the
     product of the resulting two numbers.
 
     Args:
         input_file (str): A file of newline separated numbers.
+        n_addends (int):
     """
     L = _load_input(input_file)
-    repair_cost = calc_repair_cost(L)
+    addends = _get_addends(L, n=n_addends, sum_=sum_)
+    repair_cost = calc_repair_cost(L, n_addends=n_addends, sum_=sum_)
 
-    print(repair_cost)
-
-    return repair_cost
+    print(f"{addends} multiply to {repair_cost} and sum to {sum_}")
