@@ -13,3 +13,11 @@ package_group(
         "//libs/password_philosophy",
     ],
 )
+
+package_group(
+    name = "tobaggan_trajectory",
+    packages = [
+        "//apps/tobaggan_trajectory",
+        "//libs/tobaggan_trajectory",
+    ],
+)
