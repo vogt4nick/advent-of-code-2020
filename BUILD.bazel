@@ -1,4 +1,12 @@
 package_group(
+    name = "passport_processing",
+    packages = [
+        "//apps/passport_processing",
+        "//libs/passport_processing",
+    ],
+)
+
+package_group(
     name = "password_philosophy",
     packages = [
         "//apps/password_philosophy",
