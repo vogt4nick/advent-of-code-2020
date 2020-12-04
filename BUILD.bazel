@@ -1,4 +1,12 @@
 package_group(
+    name = "password_philosophy",
+    packages = [
+        "//apps/password_philosophy",
+        "//libs/password_philosophy",
+    ],
+)
+
+package_group(
     name = "report_repair",
     packages = [
         "//apps/report_repair",
@@ -6,13 +14,6 @@ package_group(
     ],
 )
 
-package_group(
-    name = "password_philosophy",
-    packages = [
-        "//apps/password_philosophy",
-        "//libs/password_philosophy",
-    ],
-)
 
 package_group(
     name = "tobaggan_trajectory",
