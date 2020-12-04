@@ -4,14 +4,14 @@
 #
 #     https://registry.hub.docker.com/r/tradingai/bazel/dockerfile
 
-FROM library/ubuntu:18.04@sha256:e5dd9dbb37df5b731a6688fa49f4003359f6f126958c9c928f937bec69836320
+FROM library/ubuntu:18.04@sha256:a7fa45fb43d471f4e66c5b53b1b9b0e02f7f1d37a889a41bbe1601fac70cb54e
 
 # TODO: define jdk version here
 # TODO: get versions from shared VERSION file or similar
 
-ENV BAZEL_VERSION=3.7.0 \
+ENV BAZEL_VERSION=3.7.1 \
     GOLANG_VERSION=1.13.8 \
-    PYTHON_VERSION=3.7.7 \
+    PYTHON_VERSION=3.9.0 \
     PROTOBUF_VERSION=3.6.1 \
     NODEJS_VERSION=12
 
